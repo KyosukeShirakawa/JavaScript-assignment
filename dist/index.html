@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="./style.css" rel="stylesheet">
+  <title>Document</title>
+</head>
+<body class="bg-black">
+  <div id="start-div" class="text-center m-20 flex flex-col items-center">
+    <h1 class="text-4xl mb-8">MERGE JS TERMINAL</h1>
+    <form class="w-96 p-10 flex flex-col gap-2 items-center" action="">
+      <label for="usernameInput">NAME:</label>
+      <input class="border-2 w-2/3" id="usernameInput" name="usernameInput" type="text">
+      <label for="difficultyInput">DIFFICULTY:</label>
+      <select class="text-center mb-8 w-2/3" id="difficultyInput" name="difficultyInput">
+        <option value="easy">EASY</option>
+        <option value="medium">MEDIUM</option>
+        <option value="hard">HARD</option>
+      </select>
+      <input id="submit-btn" class="w-2/6 p-1" type="submit" value="PLAY">
+    </form>
+  </div>
+  <div hidden id="game-div" class="text-center m-10 flex flex-col items-center">
+    <h1 class="text-4xl mb-8">WEB PROG EVOLUTION</h1>
+    <div id="content" class="flex gap-5">
+      <div id="left" class="w-60">
+        <div id="game-data" class="border-2 px-4 py-2 mb-2">
+          <div class="flex text-left">
+            <h3 class="w-22">NAME</h3>
+            <h3><span class="mx-5">:</span><span id="username"></span></h3>
+          </div>
+          <div class="flex text-left">
+            <h3 class="w-22">DIFFICULTY</h3>
+            <h3><span class="mx-5">:</span><span id="difficulty">HARD</span></h3>
+          </div>
+          <div class="flex text-left">
+            <h3 class="w-22">TIME</h3>
+            <h3><span class="mx-5">:</span><span id="time">00:56</span></h3>
+          </div>
+          <div class="flex text-left">
+            <h3 class="w-22">SCORE</h3>
+            <h3><span class="mx-5">:</span><span id="score">000190</span></h3>
+          </div>
+          <button>DRAW</button>
+        </div>
+        <div id="score-table" class="border-2 p-2">
+          <div class="flex text-left">
+            <h3 class="w-24">SCRIPTING</h3>
+            <h3><span class="mx-5">* 05p =</span><span>10</span></h3>
+          </div>
+          <div class="flex text-left">
+            <h3 class="w-24">STYLING</h3>
+            <h3><span class="mx-5">* 05p =</span><span>15</span></h3>
+          </div>
+          <div class="flex text-left">
+            <h3 class="w-24">MARKUP</h3>
+            <h3><span class="mx-5">* 05p =</span><span>05</span></h3>
+          </div>
+          <div class="flex text-left">
+            <h3 class="w-24">LANG C</h3>
+            <h3><span class="mx-5">* 10p =</span><span>10</span></h3>
+          </div>
+          <div class="flex text-left">
+            <h3 class="w-24">IDE</h3>
+            <h3><span class="mx-5">* 10p =</span><span>20</span></h3>
+          </div>
+          <div class="flex text-left">
+            <h3 class="w-24">AUDIO</h3>
+            <h3><span class="mx-5">* 10p =</span><span>20</span></h3>
+          </div>
+          <div class="flex text-left">
+            <h3 class="w-24">VIDEO</h3>
+            <h3><span class="mx-5">* 10p =</span><span>20</span></h3>
+          </div>
+          <div class="flex text-left">
+            <h3 class="w-24">IMAGE</h3>
+            <h3><span class="mx-5">* 10p =</span><span>20</span></h3>
+          </div>
+          <div class="flex text-left">
+            <h3 class="w-24">CMS</h3>
+            <h3><span class="mx-5">* 10p =</span><span>20</span></h3>
+          </div>
+          <div class="flex text-left">
+            <h3 class="w-24">DB</h3>
+            <h3><span class="mx-5">* 10p =</span><span>20</span></h3>
+          </div>
+        </div>
+      </div>
+      <div id="center">
+        <!-- <table id="grid">
+          <tr>
+            <td class=" border-2 w-13 h-13"><img draggable="true" src="assets/logos/js.png" ></td>
+            <td class=" border-2 w-13 h-13"></td>
+            <td class=" border-2 w-13 h-13"></td>
+            <td class=" border-2 w-13 h-13"><img draggable="true" src="assets/logos/js.png" >
+            </td>
+          </tr>
+          <tr class="row">
+            <td class="col border-2 w-13 h-13"></td>
+            <td class="col border-2 w-13 h-13"></td>
+            <td class="col border-2 w-13 h-13"></td>
+            <td class="col border-2 w-13 h-13"></td>
+          </tr>
+          <tr class="row">
+            <td class="col border-2 w-13 h-13"></td>
+            <td class="col border-2 w-13 h-13"><img draggable="true" src="assets/logos/js.png" ></td>
+            <td class="col border-2 w-13 h-13"></td>
+            <td class="col border-2 w-13 h-13"></td>
+          </tr>
+          <tr class="row">
+            <td class="col border-2 w-13 h-13"><img draggable="true" src="assets/logos/js.png" ></td>
+            <td class="col border-2 w-13 h-13"></td>
+            <td class="col border-2 w-13 h-13"></td>
+            <td class="col border-2 w-13 h-13"><img draggable="true" src="assets/logos/js.png" ></td>
+          </tr>
+        </table>
+        <div id="tooltip" class="bg-white p-4 max-w-100">
+          <h2 class="text-black">Scripting Evolution</h3>
+          <p class="text-black pb-2">The rise of scripting languages from basic JS to powerful full-stack frameworks.</p>
+          <img class="mb-2" src="./assets/evolutions/Scripting.png" alt="">
+        </div> -->
+      </div>
+      <div id="leaderboard" class="border-2 w-40 p-2">
+        <h2 class="border-b-2 border-white mb-2">LEADERBOARD</h2>
+        <div class="mb-4">
+          <h4>HARD</h4>
+          <div class="flex text-left">
+            <h4 class="w-20"><span >PLAYER 1</span></h4>
+            <h4><span class="ml-1">: </span>000190</h4>
+          </div>
+          <div class="flex text-left">
+            <h4 class="w-20"><span >PLAYER 1</span></h4>
+            <h4><span class="ml-1">: </span>000190</h4>
+          </div>
+          <div class="flex text-left">
+            <h4 class="w-20"><span >PLAYER 1</span></h4>
+            <h4><span class="ml-1">: </span>000190</h4>
+          </div>
+          <div class="flex text-left">
+            <h4 class="w-20"><span >PLAYER 1</span></h4>
+            <h4><span class="ml-1">: </span>000190</h4>
+          </div>
+          <div class="flex text-left">
+            <h4 class="w-20"><span >PLAYER 1</span></h4>
+            <h4><span class="ml-1">: </span>000190</h4>
+          </div>
+        </div>
+        <div class="mb-4">
+          <h4>MEDIUM</h4>
+          <div class="flex text-left">
+            <h4 class="w-20"><span >PLAYER 1</span></h4>
+            <h4><span class="ml-1">: </span>000190</h4>
+          </div>
+          <div class="flex text-left">
+            <h4 class="w-20"><span >PLAYER 1</span></h4>
+            <h4><span class="ml-1">: </span>000190</h4>
+          </div>
+          <div class="flex text-left">
+            <h4 class="w-20"><span >PLAYER 1</span></h4>
+            <h4><span class="ml-1">: </span>000190</h4>
+          </div>
+          <div class="flex text-left">
+            <h4 class="w-20"><span >PLAYER 1</span></h4>
+            <h4><span class="ml-1">: </span>000190</h4>
+          </div>
+          <div class="flex text-left">
+            <h4 class="w-20"><span >PLAYER 1</span></h4>
+            <h4><span class="ml-1">: </span>000190</h4>
+          </div>
+        </div>
+        <div>
+          <h4>EASY</h4>
+          <div class="flex text-left">
+            <h4 class="w-20"><span >PLAYER 1</span></h4>
+            <h4><span class="ml-1">: </span>000190</h4>
+          </div>
+          <div class="flex text-left">
+            <h4 class="w-20"><span >PLAYER 1</span></h4>
+            <h4><span class="ml-1">: </span>000190</h4>
+          </div>
+          <div class="flex text-left">
+            <h4 class="w-20"><span >PLAYER 1</span></h4>
+            <h4><span class="ml-1">: </span>000190</h4>
+          </div>
+          <div class="flex text-left">
+            <h4 class="w-20"><span >PLAYER 1</span></h4>
+            <h4><span class="ml-1">: </span>000190</h4>
+          </div>
+          <div class="flex text-left">
+            <h4 class="w-20"><span >PLAYER 1</span></h4>
+            <h4><span class="ml-1">: </span>000190</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="js/index.js" type="module"></script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+@import "tailwindcss";
+
+
+@layer base {
+  *{
+    margin: 0; 
+    padding: 0; 
+    color: white;
+    border-color: aqua;
+    border-collapse: collapse;
+  }
+  
+  input, select, form, button {
+    border: 2px solid aqua;
+    border-radius: 8px;
+  }
+  h2 {
+    font-weight: 800;
+  }
+  h4 {
+    font-size: 0.8rem;
+  }
+  table {
+    border-collapse: separate; 
+  }
+  div, td, img{
+    border-radius: 8px;
+  }
+
+  td:has(img) {
+    background-color: white;
+  }
+  button {
+    background-color: rgb(238, 73, 183);
+    padding: 2px 30px;
+    font-size: 0.8rem;
+  }
+  td {
+    position: relative;
+  }
+  td img {
+    object-fit: contain;
+    display: block;
+  }
+  #tooltip{
+    position: absolute;
+    opacity: 0;
+    transition: opacity 1s ease;
+    pointer-events: none;
+  }
+  #tooltip:before {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: white;
+    z-index: 10;
+    top: -10px;
+    left:50%;
+    margin-left: 5px;
+    content: '';
+    transform: rotate(45deg);
+    margin-top: 5px;
+  }
+  #tooltip.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
