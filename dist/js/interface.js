@@ -10,11 +10,25 @@ const centerDiv = document.querySelector('#center');
 export function renderUserInfo() {
   usernameSpan.innerHTML = `${username}`;
   difficultySpan.innerHTML = `${level}`;
-  timeSpan.innerHTML = `${time}`;
   scoreSpan.innerHTML = `${score}`;
 }
 
+export function renderAndUpdateTimer() {
+  // https://how.dev/answers/how-to-create-a-countdown-timer-using-javascript
 
+  const now = new Date().getTime();
+  const timeLeft = time - now;
+  const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((timeLeft % (1000 * 60)) / (1000));
+
+  const timerSpan = document.querySelector('#timer');
+
+  timerSpan.innerHTML = `${minutes}:${seconds}`;
+
+  if(timeLeft > 0) {
+    setTimeout(renderAndUpdateTimer, 1000);
+  }
+}
 
 export function renderTable() {
   centerDiv.innerHTML = `

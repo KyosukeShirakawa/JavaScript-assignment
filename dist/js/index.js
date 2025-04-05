@@ -1,11 +1,11 @@
 import { levels, evolutions} from './evolutions.js';
-import { renderTable, renderUserInfo, renderTooltip } from './interface.js';
+import { renderTable, renderUserInfo, renderAndUpdateTimer, renderTooltip } from './interface.js';
 import { getHigherTech, handleClickCell, random, random468 } from './game.js';
 
 export let username;
 export let level;
 export let time;
-export let score;
+export let score = 0;
 export let technologies;
 export let board = [];
 
@@ -19,11 +19,8 @@ document.addEventListener('click', (e) => {
     startDiv.hidden = true;
     gameDiv.hidden = false;
 
-    renderUserInfo();
-    initData();
+    initData(e);
     renderTable();
-    renderUserInfo();
-
   }
 
   if(e.target.matches('td') && !e.target.querySelector('img')) {
@@ -106,10 +103,14 @@ function initData(e) {
   level = document.querySelector('#difficultyInput').value;
   technologies = evolutions.filter(e => e.difficulty === level
   );
-  // TODO initilize timer, score
+  time = new Date().getTime() + (1000 * 60 * levels[level].time)
+  // TODO initilize score
+
 
   initBoard();
   populateCells();
+  renderAndUpdateTimer();
+  renderUserInfo();
 }
 
 function initBoard() {
@@ -138,24 +139,3 @@ function populateCells() {
     }
   }
 }
-
-
-function updateTimer() {
-  // https://how.dev/answers/how-to-create-a-countdown-timer-using-javascript
-
-  time = new Date().getTime() + (1000 * 60 * levels.easy.time)
-
-  const now = new Date().getTime();
-  const timeLeft = time - now;
-  const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((timeLeft % (1000 * 60)) / (1000));
-
-  const timerSpan = document.querySelector('#timer');
-
-  timerSpan.innerHTML = `${minutes}:${seconds}`;
-
-  if(timeLeft > 0) {
-    setTimeout(updateTimer, 1000);
-  }
-}
-updateTimer();

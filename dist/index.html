@@ -7,7 +7,7 @@
   <title>Document</title>
 </head>
 <body class="bg-black">
-  <div hidden id="start-div" class="text-center m-20 flex flex-col items-center">
+  <div id="start-div" class="text-center m-20 flex flex-col items-center">
     <h1 class="text-4xl mb-8">MERGE JS TERMINAL</h1>
     <form class="w-96 p-10 flex flex-col gap-2 items-center" action="">
       <label for="usernameInput">NAME:</label>
@@ -21,18 +21,18 @@
       <input id="submit-btn" class="w-2/6 p-1" type="submit" value="PLAY">
     </form>
   </div>
-  <div id="game-div" class="text-center m-10 flex flex-col items-center">
+  <div hidden id="game-div" class="text-center m-10 flex flex-col items-center">
     <h1 class="text-4xl mb-8">WEB PROG EVOLUTION</h1>
     <div id="content" class="flex gap-5">
       <div id="left" class="w-60">
         <div id="game-data" class="border-2 px-4 py-2 mb-2">
           <div class="flex text-left">
             <h3 class="w-22">NAME</h3>
-            <h3><span class="mx-5">:</span><span id="username"></span></h3>
+            <h3><span class="mx-5">:</span><span id="username">default name</span></h3>
           </div>
           <div class="flex text-left">
             <h3 class="w-22">DIFFICULTY</h3>
-            <h3><span class="mx-5">:</span><span id="difficulty">HARD</span></h3>
+            <h3><span class="mx-5">:</span><span id="difficulty">default difficulty</span></h3>
           </div>
           <div class="flex text-left">
             <h3 class="w-22">TIME</h3>
