@@ -18,7 +18,7 @@ Minimum Requirements (8 points)
 - [x] Displaying the Game Board – When the game starts, the game screen appears, generating a board of selectable size (4x4, 6x6, 8x8). (1 point)
 - [x] Random Starting Technologies – At the start of the game, 4, 6, or 8 random level 1 technologies are placed on the board. (2 points)
 - [ ] Tooltip System – Hovering over an element for 3 seconds displays a tooltip with the evolution chain and description. (1 point)
-- [ ] Generating New Technologies – The player can generate new level 1 technologies on the board (by clicking on an empty cell or the "DRAW" button). (2 points)
+- [x] Generating New Technologies – The player can generate new level 1 technologies on the board (by clicking on an empty cell or the "DRAW" button). (2 points)
 - [x] Merging Technologies – If two identical elements merge, a higher-level technology is created. (2 points)
 
 Core Tasks (12 points)
