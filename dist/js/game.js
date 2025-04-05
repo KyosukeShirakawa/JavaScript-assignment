@@ -1,5 +1,4 @@
-import {board, technologies} from './index.js';
-
+import { board, technologies} from './index.js';
 
 export function random(min, max) {
   return Math.floor(Math.random() * (max-min + 1)+min )
@@ -26,5 +25,5 @@ export function handleClickCell(e) {
   const j = e.target.cellIndex;
   const tr = e.target.parentNode;
   const i = tr.rowIndex;
-    board[i][j] = generateRandomTech(0, technologies.length-1).steps[0];
+  board[i][j] = generateRandomTech(0, technologies.length-1).steps[0];
 }

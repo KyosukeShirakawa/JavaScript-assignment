@@ -1,6 +1,6 @@
 import { levels, evolutions} from './evolutions.js';
-import { renderTable, renderUserInfo, renderAndUpdateTimer, renderTooltip } from './interface.js';
-import { getHigherTech, handleClickCell, random, random468 } from './game.js';
+import { renderTable, renderUserInfo, renderAndUpdateTimer } from './interface.js';
+import { getHigherTech, handleClickCell,random, random468 } from './game.js';
 
 export let username;
 export let level;
@@ -9,18 +9,16 @@ export let score = 0;
 export let technologies;
 export let board = [];
 
-const startDiv = document.querySelector('#start-div');
-const gameDiv = document.querySelector('#game-div');
-
-
 document.addEventListener('click', (e) => {
   e.preventDefault();
   if(e.target.matches('#submit-btn')) {
-    startDiv.hidden = true;
-    gameDiv.hidden = false;
+    document.querySelector('#start-div').hidden = true;
+    document.querySelector('#game-div').hidden = false;
 
-    initData(e);
+    initData();
     renderTable();
+    renderAndUpdateTimer();
+    renderUserInfo();
   }
 
   if(e.target.matches('td') && !e.target.querySelector('img')) {
@@ -98,7 +96,8 @@ document.addEventListener('mouseout', (e) => {
   }
 }, true);
 
-function initData(e) {
+
+function initData() {
   username = document.querySelector('#usernameInput').value;
   level = document.querySelector('#difficultyInput').value;
   technologies = evolutions.filter(e => e.difficulty === level
@@ -106,16 +105,11 @@ function initData(e) {
   time = new Date().getTime() + (1000 * 60 * levels[level].time)
   // TODO initilize score
 
-
   initBoard();
-  populateCells();
-  renderAndUpdateTimer();
-  renderUserInfo();
 }
 
 function initBoard() {
   const {cols, rows} = levels[level];
-  board = [];
   for (let i = 0; i < rows; i++) {
     const row = [];
     for (let j = 0; j < cols; j++) {
@@ -123,6 +117,7 @@ function initBoard() {
     }
     board.push(row)
   }
+  populateCells();
 }
 
 function populateCells() {

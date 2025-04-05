@@ -1,9 +1,8 @@
 
-import { username, level, time, score, board, technologies } from "./index.js";
+import { username, level, time, score, board } from "./index.js";
 
 const usernameSpan = document.querySelector('#username');
 const difficultySpan = document.querySelector('#difficulty');
-const timeSpan = document.querySelector('#time');
 const scoreSpan = document.querySelector('#score');
 const centerDiv = document.querySelector('#center');
 
@@ -46,7 +45,7 @@ export function renderTable() {
 
 };
 
-export function renderTooltip() {
+function renderTooltip() {
   const tooltip = document.createElement('div');
   tooltip.id = 'tooltip';
   tooltip.className = 'bg-white p-4 max-w-100';
