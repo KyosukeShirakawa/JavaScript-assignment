@@ -4,7 +4,7 @@ import { getHigherTech, handleClickCell, random, random468 } from './game.js';
 
 export let username;
 export let level;
-export let time = '00:57';
+export let time;
 export let score = '000191';
 export let technologies;
 export let board = [];
@@ -92,6 +92,7 @@ document.addEventListener('mouseover', (e) => {
       <p class="text-black pb-2">${technologies.find(tech => tech.steps.includes(step)).description}</p>
       <img class="mb-2" src="./assets/evolutions/${technologies.find(tech => tech.steps.includes(step)).tooltip}" alt="${technologies.find(tech => tech.steps.includes(step)).name}">`
 
+      // https://medium.com/@jazpersaldana_43178/basics-of-getboundingclientrect-bd6c382759d9
       const imgRect = e.target.getBoundingClientRect();
 
       tooltip.style.left = `${imgRect.left + window.scrollX + e.target.offsetWidth / 2 - tooltip.offsetWidth / 2}px`;
@@ -132,3 +133,23 @@ function populateCells(n, rows, cols) {
   }
 }
 
+
+function updateTimer() {
+  // https://how.dev/answers/how-to-create-a-countdown-timer-using-javascript
+
+  time = new Date().getTime() + (1000 * 60 * levels.easy.time)
+
+  const now = new Date().getTime();
+  const timeLeft = time - now;
+  const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((timeLeft % (1000 * 60)) / (1000));
+
+  const timerSpan = document.querySelector('#timer');
+
+  timerSpan.innerHTML = `${minutes}:${seconds}`;
+
+  if(timeLeft > 0) {
+    setTimeout(updateTimer, 1000);
+  }
+}
+updateTimer();
