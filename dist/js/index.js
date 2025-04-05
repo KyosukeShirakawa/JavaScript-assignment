@@ -4,8 +4,8 @@ import { getHigherTech, handleClickCell, random, random468 } from './game.js';
 
 export let username;
 export let level;
-export let time = '00:57';
-export let score = '000191';
+export let time;
+export let score;
 export let technologies;
 export let board = [];
 
@@ -19,16 +19,8 @@ document.addEventListener('click', (e) => {
     startDiv.hidden = true;
     gameDiv.hidden = false;
 
-    username = document.querySelector('#usernameInput').value;
-    level = document.querySelector('#difficultyInput').value;
-    
-    const {cols, rows} = levels[level];
-    technologies = evolutions.filter(e => e.difficulty === level
-    );
-
     renderUserInfo();
-    initBoard(cols, rows);
-    populateCells(random468(), cols, rows);
+    initData();
     renderTable();
     renderUserInfo();
 
@@ -108,19 +100,33 @@ document.addEventListener('mouseout', (e) => {
   }
 }, true);
 
-function initBoard(n, m) {
+function initData(e) {
+  username = document.querySelector('#usernameInput').value;
+  level = document.querySelector('#difficultyInput').value;
+  technologies = evolutions.filter(e => e.difficulty === level
+  );
+  // TODO initilize timer, score
+
+  initBoard();
+  populateCells();
+}
+
+function initBoard() {
+  const {cols, rows} = levels[level];
   board = [];
-  for (let i = 0; i < n; i++) {
+  for (let i = 0; i < rows; i++) {
     const row = [];
-    for (let j = 0; j < m; j++) {
+    for (let j = 0; j < cols; j++) {
       row.push("");
     }
     board.push(row)
   }
 }
 
-function populateCells(n, rows, cols) {
+function populateCells() {
+  const {cols, rows} = levels[level];
   let filled = 0;
+  const n = random468();
   while (filled<n) {
     const i = random(0, rows-1);
     const j = random(0, cols-1);
