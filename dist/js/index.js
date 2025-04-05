@@ -80,16 +80,17 @@ document.addEventListener('mouseover', (e) => {
       const step = board[rowIndex][colIndex];
       const tooltip = document.querySelector('#tooltip');
       if(step) {
+        const imgRect = e.target.getBoundingClientRect();
+        tooltip.style.left = `${imgRect.left + window.scrollX + e.target.offsetWidth / 2 - (tooltip.offsetWidth / 2) -10}px`;
+        tooltip.style.top = `${imgRect.bottom + window.scrollY + 5}px`;
+
         tooltip.innerHTML = `
         <h2 class="text-black">${technologies.find(tech => tech.steps.includes(step)).name}</h2>
         <p class="text-black pb-2">${technologies.find(tech => tech.steps.includes(step)).description}</p>
         <img class="mb-2" src="./assets/evolutions/${technologies.find(tech => tech.steps.includes(step)).tooltip}" alt="${technologies.find(tech => tech.steps.includes(step)).name}">`
 
         // https://medium.com/@jazpersaldana_43178/basics-of-getboundingclientrect-bd6c382759d9
-        const imgRect = e.target.getBoundingClientRect();
 
-        tooltip.style.left = `${imgRect.left + window.scrollX + e.target.offsetWidth / 2 - tooltip.offsetWidth / 2 -10}px`;
-        tooltip.style.top = `${imgRect.bottom + window.scrollY + 5}px`;
         tooltip.classList.add('visible');
       }
 
