@@ -1,6 +1,6 @@
 import { levels, evolutions} from './evolutions.js';
 import { renderTable, renderUserInfo, renderAndUpdateTimer } from './interface.js';
-import { getHigherTech, handleClickCell,random, random468 } from './game.js';
+import { getHigherTech, handleClickCell, handleClickDrawBtn,random, random468 } from './game.js';
 
 export let username;
 export let level;
@@ -24,6 +24,9 @@ document.addEventListener('click', (e) => {
   if(e.target.matches('td') && !e.target.querySelector('img')) {
     handleClickCell(e);
     renderTable();
+  }
+  if(e.target.matches('#draw-button')) {
+    handleClickDrawBtn();
   }
 });
 
