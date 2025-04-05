@@ -67,12 +67,15 @@ document.addEventListener('drop', (e) => {
 
 document.addEventListener('mouseover', (e) => {
   if(e.target.matches('td') && e.target.querySelector('img')) {
+    // TODO setting hover for 3 sec
+    // BUG hovering over to the next cell shows previous render
+    // BUG hover doesnt show tooltip for the first cell hover after refresh
     setTimeout(() => {
-      const tooltip = document.querySelector('#tooltip');
       const cell = e.target.closest('td');
       const rowIndex = cell.parentNode.rowIndex;
       const colIndex = cell.cellIndex;
       const step = board[rowIndex][colIndex];
+      const tooltip = document.querySelector('#tooltip');
 
       tooltip.innerHTML = `
       <h2 class="text-black">${technologies.find(tech => tech.steps.includes(step)).name}</h2>
@@ -82,10 +85,11 @@ document.addEventListener('mouseover', (e) => {
       // https://medium.com/@jazpersaldana_43178/basics-of-getboundingclientrect-bd6c382759d9
       const imgRect = e.target.getBoundingClientRect();
 
-      tooltip.style.left = `${imgRect.left + window.scrollX + e.target.offsetWidth / 2 - tooltip.offsetWidth / 2}px`;
-      tooltip.style.top = `${imgRect.bottom + window.scrollY}px`;
+      tooltip.style.left = `${imgRect.left + window.scrollX + e.target.offsetWidth / 2 - tooltip.offsetWidth / 2 -10}px`;
+      tooltip.style.top = `${imgRect.bottom + window.scrollY + 5}px`;
       tooltip.classList.add('visible');
-    },3000)
+
+    }, 3000);
   }
 });
 
@@ -94,7 +98,7 @@ document.addEventListener('mouseout', (e) => {
     const tooltip = document.querySelector('#tooltip');
     tooltip.classList.remove('visible');
   }
-}, true);
+});
 
 
 function initData() {

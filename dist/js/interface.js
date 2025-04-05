@@ -49,5 +49,5 @@ function renderTooltip() {
   const tooltip = document.createElement('div');
   tooltip.id = 'tooltip';
   tooltip.className = 'bg-white p-4 max-w-100';
-  document.body.appendChild(tooltip);
+  document.querySelector('#center').appendChild(tooltip);
 }
