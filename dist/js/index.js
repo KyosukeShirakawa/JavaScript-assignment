@@ -67,39 +67,50 @@ document.addEventListener('drop', (e) => {
     renderTable();
   }
 })
-
+let timer;
+let currentCell = null;
 document.addEventListener('mouseover', (e) => {
-  if(e.target.matches('td') && e.target.querySelector('img')) {
-    // TODO setting hover for 3 sec
-    // BUG hovering over to the next cell shows previous render
-    // BUG hover doesnt show tooltip for the first cell hover after refresh
-    setTimeout(() => {
-      const cell = e.target.closest('td');
-      const rowIndex = cell.parentNode.rowIndex;
-      const colIndex = cell.cellIndex;
-      const step = board[rowIndex][colIndex];
-      const tooltip = document.querySelector('#tooltip');
-      if(step) {
-        const imgRect = e.target.getBoundingClientRect();
-        tooltip.style.left = `${imgRect.left + window.scrollX + e.target.offsetWidth / 2 - (tooltip.offsetWidth / 2) -10}px`;
-        tooltip.style.top = `${imgRect.bottom + window.scrollY + 5}px`;
+    const td = e.target.closest('td');
+    if(td && td.querySelector('img')) {
+      if(e.target === currentCell) return;
+      currentCell = td;
+      // TODO setting hover for 3 sec
+      // BUG hovering over to the next cell shows previous render
+      // BUG hover doesnt show tooltip for the first cell hover after refresh
 
-        tooltip.innerHTML = `
-        <h2 class="text-black">${technologies.find(tech => tech.steps.includes(step)).name}</h2>
-        <p class="text-black pb-2">${technologies.find(tech => tech.steps.includes(step)).description}</p>
-        <img class="mb-2" src="./assets/evolutions/${technologies.find(tech => tech.steps.includes(step)).tooltip}" alt="${technologies.find(tech => tech.steps.includes(step)).name}">`
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        const cell = e.target.closest('td');
+        const rowIndex = cell.parentNode.rowIndex;
+        const colIndex = cell.cellIndex;
+        const step = board[rowIndex][colIndex];
+        const tooltip = document.querySelector('#tooltip');
+        if(step) {
+          const imgRect = e.target.getBoundingClientRect();
+          tooltip.style.left = `${imgRect.left + window.scrollX + e.target.offsetWidth / 2 - (tooltip.offsetWidth / 2) -10}px`;
+          tooltip.style.top = `${imgRect.bottom + window.scrollY + 5}px`;
 
-        // https://medium.com/@jazpersaldana_43178/basics-of-getboundingclientrect-bd6c382759d9
+          tooltip.innerHTML = `
+          <h2 class="text-black">${technologies.find(tech => tech.steps.includes(step)).name}</h2>
+          <p class="text-black pb-2">${technologies.find(tech => tech.steps.includes(step)).description}</p>
+          <img class="mb-2" src="./assets/evolutions/${technologies.find(tech => tech.steps.includes(step)).tooltip}" alt="${technologies.find(tech => tech.steps.includes(step)).name}">`
 
-        tooltip.classList.add('visible');
-      }
+          // https://medium.com/@jazpersaldana_43178/basics-of-getboundingclientrect-bd6c382759d9
 
-    }, 3000);
-  }
+          tooltip.classList.add('visible');
+        }
+
+        }, 3000);
+    }
 });
 
 document.addEventListener('mouseout', (e) => {
-  if(e.target.matches('td') && e.target.querySelector('img')) {
+  const td = e.target.closest('td');
+  if(td && e.target.querySelector('img')) {
+    if(td.contains(e.relatedTarget)) return;
+    console.log('out');
+
+    clearTimeout(timer);
     const tooltip = document.querySelector('#tooltip');
     tooltip.classList.remove('visible');
   }
