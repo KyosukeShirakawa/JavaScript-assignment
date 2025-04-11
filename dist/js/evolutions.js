@@ -44,29 +44,7 @@ export const evolutions = [
                 "img": "jquery.png",
                 "description": "A library simplifying JavaScript development."
             },
-            {
-                "step": 3,
-                "name": "Node.js",
-                "img": "node.png",
-                "description": "Brought JavaScript to the backend."
-            },
-            {
-                "step": 4,
-                "name": "Vue.js",
-                "img": "vue.png",
-                "description": "A progressive JavaScript framework for UI development."
-            }, {
-                "step": 5,
-                "name": "React",
-                "img": "react.png",
-                "description": "React is a JavaScript library for building interactive user interfaces."
-            },
-            {
-                "step": 6,
-                "name": "Next.js",
-                "img": "next js.png",
-                "description": "A React framework optimized for performance."
-            }
+
         ]
     },
     {
@@ -88,29 +66,6 @@ export const evolutions = [
                 "img": "css3.png",
                 "description": "Introduced advanced styling options like animations."
             },
-            {
-                "step": 3,
-                "name": "Bootstrap",
-                "img": "bootstrap.png",
-                "description": "A framework for responsive web design."
-            },
-            {
-                "step": 4,
-                "name": "SASS",
-                "img": "sass.png",
-                "description": "A preprocessor adding variables and functions to CSS."
-            }, {
-                "step": 5,
-                "name": "Material UI",
-                "img": "material_ui.png",
-                "description": "Material UI is a React-based UI framework following Google's Material Design principles."
-            },
-            {
-                "step": 6,
-                "name": "Tailwind",
-                "img": "tailwind.png",
-                "description": "A utility-first CSS framework for fast styling."
-            }
         ]
     },
     {
@@ -132,30 +87,6 @@ export const evolutions = [
                 "img": "html2.png",
                 "description": "The early version of HTML introduced basic markup for web pages."
             },
-            {
-                "step": 3,
-                "name": "HTML 4",
-                "img": "html4.png",
-                "description": "HTML4 improved structure and added CSS support."
-            },
-            {
-                "step": 4,
-                "name": "XHTML",
-                "img": "xhtml.png",
-                "description": "A stricter version of HTML, following XML syntax rules."
-            },
-            {
-                "step": 5,
-                "name": "HTML5",
-                "img": "html5.png",
-                "description": "Introduced multimedia elements and APIs for modern web apps."
-            },
-            {
-                "step": 6,
-                "name": "HTML6",
-                "img": "html6.png",
-                "description": "The future of web markup, with enhanced capabilities."
-            }
         ]
     },
     {

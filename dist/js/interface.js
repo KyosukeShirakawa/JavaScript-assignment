@@ -1,5 +1,5 @@
 
-import { username, level, time, score, board } from "./index.js";
+import { username, level, time, score, board, techScore } from "./game.js";
 
 const usernameSpan = document.querySelector('#username');
 const difficultySpan = document.querySelector('#difficulty');
@@ -10,6 +10,16 @@ export function renderUserInfo() {
   usernameSpan.innerHTML = `${username}`;
   difficultySpan.innerHTML = `${level}`;
   scoreSpan.innerHTML = `${score}`;
+}
+
+export function renderTechScores() {
+  const spans = document.querySelectorAll('.techScore');
+  return Array.from(spans).map((span) => {
+    const category = span.dataset.category;
+    if(category && techScore.hasOwnProperty(category)) {
+      span.innerHTML = techScore[category];
+    }
+  })
 }
 
 export function renderAndUpdateTimer() {
