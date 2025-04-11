@@ -44,7 +44,7 @@
   }
   #tooltip{
     position: absolute;
-    opacity: 0;
+    opacity: 1;
     pointer-events: none;
     z-index: 10;
   }

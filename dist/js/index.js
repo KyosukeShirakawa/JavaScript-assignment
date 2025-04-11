@@ -46,7 +46,7 @@ document.addEventListener('dragstart', (e) => {
 
 document.addEventListener('dragover', (e) => {
   e.preventDefault();
-})
+});
 
 document.addEventListener('drop', (e) => {
   e.preventDefault();
@@ -66,7 +66,8 @@ document.addEventListener('drop', (e) => {
 
     renderTable();
   }
-})
+});
+
 let timer;
 let currentCell = null;
 document.addEventListener('mouseover', (e) => {
@@ -84,6 +85,14 @@ document.addEventListener('mouseover', (e) => {
         const rowIndex = cell.parentNode.rowIndex;
         const colIndex = cell.cellIndex;
         const step = board[rowIndex][colIndex];
+
+
+
+        console.log(cell);
+        console.log(rowIndex);
+        console.log(colIndex);
+        console.log(step);
+
         const tooltip = document.querySelector('#tooltip');
         if(step) {
           const imgRect = e.target.getBoundingClientRect();
@@ -108,8 +117,6 @@ document.addEventListener('mouseout', (e) => {
   const td = e.target.closest('td');
   if(td && e.target.querySelector('img')) {
     if(td.contains(e.relatedTarget)) return;
-    console.log('out');
-
     clearTimeout(timer);
     const tooltip = document.querySelector('#tooltip');
     tooltip.classList.remove('visible');
