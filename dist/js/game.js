@@ -1,4 +1,4 @@
-import { renderAndUpdateTimer, renderScores, renderTable, renderUserInfo } from './interface.js';
+import { timerTimeout,renderAndUpdateTimer, renderScores, renderTable, renderUserInfo } from './interface.js';
 import { levels, evolutions} from './evolutions.js';
 
 export let username;
@@ -213,4 +213,18 @@ export function handleClickCompletedCell(e) {
   board[i][j].tech = "";
   board[i][j].completed = false;
   renderTable();
+}
+
+export function handleClickBackToHomeBtn() {
+  document.querySelector('#start-div').hidden = false;
+  document.querySelector('#game-div').hidden = true;
+}
+
+export function handleRestartBtn() {
+  document.querySelector('#endDiv').hidden = true;
+  clearTimeout(timerTimeout);
+  initData();
+  renderTable();
+  renderAndUpdateTimer();
+  renderUserInfo();
 }

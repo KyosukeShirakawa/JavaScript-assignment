@@ -1,5 +1,5 @@
 import { renderTable, renderUserInfo, renderAndUpdateTimer, renderScores } from './interface.js';
-import {initData, handleClickCell, handleClickDrawBtn, handleDrop, handleDragStart, handleMouseover, handleMouseout, handleClickSubmit, handleClickCompletedCell } from './game.js';
+import {initData, handleClickCell, handleClickDrawBtn, handleDrop, handleDragStart, handleMouseover, handleMouseout, handleClickSubmit, handleClickCompletedCell, handleClickBackToHomeBtn, handleRestartBtn } from './game.js';
 
 
 
@@ -17,7 +17,12 @@ document.addEventListener('click', (e) => {
   if(e.target.closest('.completed')) {
     handleClickCompletedCell(e);
   }
-});
+  if(e.target.matches('#backBtn')) {
+    handleClickBackToHomeBtn();
+  }
+  if(e.target.matches('#restartBtn')) {
+    handleRestartBtn();
+  }});
 
 document.addEventListener('dragstart', (e) => {
   if(e.target.tagName === "IMG") {
@@ -45,7 +50,7 @@ document.addEventListener('mouseout', (e) => {
 
 
   initData();
-  renderTable();
+  // renderTable();
   renderAndUpdateTimer();
   renderUserInfo();
   renderScores();

@@ -1,6 +1,7 @@
 
 import { username, level, time, score, board, techScore } from "./game.js";
 
+
 export function renderUserInfo() {
   const usernameSpan = document.querySelector('#username');
   const difficultySpan = document.querySelector('#difficulty');
@@ -22,11 +23,14 @@ export function renderScores() {
   })
 }
 
+export let timerTimeout;
+
 export function renderAndUpdateTimer() {
   // https://how.dev/answers/how-to-create-a-countdown-timer-using-javascript
 
   const now = new Date().getTime();
-  const timeLeft = time - now;
+  // const timeLeft = time - now;
+  const timeLeft = 0;
   const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
   const seconds = Math.floor((timeLeft % (1000 * 60)) / (1000));
 
@@ -35,7 +39,10 @@ export function renderAndUpdateTimer() {
   timerSpan.innerHTML = `${minutes}:${seconds}`;
 
   if(timeLeft > 0) {
-    setTimeout(renderAndUpdateTimer, 1000);
+    timerTimeout = setTimeout(renderAndUpdateTimer, 1000);
+  } else {
+    timerSpan.innerHTML = '00:00';
+    document.querySelector('#endDiv').hidden = false;
   }
 }
 
