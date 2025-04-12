@@ -69,7 +69,6 @@ function generateRandomTech(min,max) {
 }
 
 function updateScores(category) {
-  console.log(category.name);
   score += levels[level].points;
   if(techScore.hasOwnProperty(category.name)) {
     techScore[category.name] += levels[level].points;
@@ -206,7 +205,6 @@ export function handleMouseout(e) {
 }
 
 export function handleClickCompletedCell(e) {
-  console.log(e);
   const j = e.target.closest('td').cellIndex;
   const tr = e.target.closest('td').parentNode;
   const i = tr.rowIndex;
