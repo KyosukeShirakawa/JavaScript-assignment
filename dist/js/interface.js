@@ -1,18 +1,17 @@
 
 import { username, level, time, score, board, techScore } from "./game.js";
 
-const usernameSpan = document.querySelector('#username');
-const difficultySpan = document.querySelector('#difficulty');
-const scoreSpan = document.querySelector('#score');
-const centerDiv = document.querySelector('#center');
-
 export function renderUserInfo() {
+  const usernameSpan = document.querySelector('#username');
+  const difficultySpan = document.querySelector('#difficulty');
   usernameSpan.innerHTML = `${username}`;
   difficultySpan.innerHTML = `${level}`;
 }
 
 export function renderScores() {
+  const scoreSpan = document.querySelector('#score');
   const spans = document.querySelectorAll('.techScore');
+
   scoreSpan.innerHTML = `${score}`;
 
   Array.from(spans).map((span) => {
@@ -41,6 +40,8 @@ export function renderAndUpdateTimer() {
 }
 
 export function renderTable() {
+  const centerDiv = document.querySelector('#center');
+
   centerDiv.innerHTML = `
   <table id="grid">
     ${board.map(row =>`

@@ -6,17 +6,18 @@ export let level = 'easy';
 export let time;
 export let score = 0;
 export let techScore = {
-  scripting: 0,
-  styling: 0,
-  markup: 0,
-  langC: 0,
-  ide: 0,
-  audio: 0,
-  video: 0,
-  image: 0,
-  cms: 0,
-  db: 0,
-}
+  "Scripting Evolution": 0,
+  "Styling Technologies": 0,
+  "Markup Languages": 0,
+  "C Language Evolution": 0,
+  "IDE Evolution": 0,
+  "Audio Formats": 0,
+  "Video Formats": 0,
+  "Image Formats": 0,
+  "CMS Evolution": 0,
+  "Database Evolution": 0,
+};
+
 export let technologies;
 export let board = [];
 
@@ -76,7 +77,6 @@ function getHigherTech(tech) {
 
   const lastStep = category.steps[category.steps.length-1];
   if(lastStep===category.steps[currentIndex+1]) {
-    console.log(category);
     updateScores(category);
     return null;
   }
@@ -86,11 +86,11 @@ function getHigherTech(tech) {
 
 function updateScores(category) {
   score += levels[level].points;
-  console.log(score)
-  if(techScore.hasOwnProperty(category)) {
-    techScore[category] += levels[level].points;
+
+  if(techScore.hasOwnProperty(category.name)) {
+    techScore[category.name] += levels[level].points;
+
     renderScores();
-    console.log(score)
   }
 }
 
