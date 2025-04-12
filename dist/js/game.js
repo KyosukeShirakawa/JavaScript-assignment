@@ -42,13 +42,10 @@ export function initData() {
 
 function initBoard() {
   const {cols, rows} = levels[level];
-  for (let i = 0; i < rows; i++) {
-    const row = [];
-    for (let j = 0; j < cols; j++) {
-      row.push("");
-    }
-    board.push(row)
-  }
+  board = Array.from({length: rows}, () => 
+    Array.from({length: cols}, () => ({tech: "", completed: false}))
+  );
+
   populateCells();
 }
 
@@ -60,8 +57,8 @@ function populateCells() {
     const i = random(0, rows-1);
     const j = random(0, cols-1);
 
-    if (board[i][j] === "") {
-      board[i][j] = technologies[Math.floor(Math.random() * technologies.length)].steps[0];
+    if (board[i][j].tech === "") {
+      board[i][j].tech = technologies[Math.floor(Math.random() * technologies.length)].steps[0];
       filled++;
     }
   }
@@ -71,22 +68,9 @@ function generateRandomTech(min,max) {
   return Array.from(technologies)[random(min, max)]; 
 }
 
-function getHigherTech(tech) {
-  const category = technologies.find(t => t.steps.some(step => step.name === tech.name));
-  const currentIndex = category.steps.findIndex(step => step.name === tech.name);
-
-  const lastStep = category.steps[category.steps.length-1];
-  if(lastStep===category.steps[currentIndex+1]) {
-    updateScores(category);
-    return null;
-  }
-
-  return category.steps[currentIndex+1];
-}
-
 function updateScores(category) {
+  console.log(category.name);
   score += levels[level].points;
-
   if(techScore.hasOwnProperty(category.name)) {
     techScore[category.name] += levels[level].points;
 
@@ -98,7 +82,8 @@ export function handleClickCell(e) {
   const j = e.target.cellIndex;
   const tr = e.target.parentNode;
   const i = tr.rowIndex;
-  board[i][j] = generateRandomTech(0, technologies.length-1).steps[0];
+  board[i][j].tech = generateRandomTech(0, technologies.length-1).steps[0];
+  renderTable();
 }
 
 export function handleClickSubmit() {
@@ -112,14 +97,14 @@ export function handleClickSubmit() {
 
 export function handleClickDrawBtn() {
   const emptyCellIndexes = board.map((row,i)=> row.map ( (cell, j) => {
-    if(!cell) {
+    if(!cell.tech) {
       return {i, j};
     }
     return null;
   })).flat().filter(cell => cell);
   if(emptyCellIndexes.length) {
     const { i, j } = emptyCellIndexes[random(0, emptyCellIndexes.length - 1)];
-    board[i][j] = generateRandomTech(0, technologies.length-1).steps[0];
+    board[i][j].tech = generateRandomTech(0, technologies.length-1).steps[0];
     renderTable();
   } else {
     return null;
@@ -142,17 +127,35 @@ export function handleDrop(e) {
     const j = e.target.parentNode.cellIndex;
     const tr = e.target.parentNode.parentNode;
     const i = tr.rowIndex;
-    const higherTech = getHigherTech(board[i][j])
-    board[i][j] = higherTech;
+    const higherTech = getHigherTech(board[i][j].tech)
 
-    e.target.appendChild(draggedElement);
+
+    board[i][j].tech = higherTech; 
+    if(isComplete(higherTech)) {
+      board[i][j].completed = true;
+    }
 
     draggedElement.classList.remove("dragging");
     draggedElement = null;
 
     const {rowIndex, colIndex} = startCellIndex;
-    board[rowIndex][colIndex] = "";
+    board[rowIndex][colIndex].tech = "";
+    renderTable();
   }
+}
+
+function getHigherTech(tech) {
+  const category = technologies.find(t => t.steps.some(step => step.name === tech.name));
+  const currentIndex = category.steps.findIndex(step => step.name === tech.name);
+
+  return category.steps[currentIndex+1];
+}
+
+function isComplete(tech) {
+  const category = technologies.find(t => t.steps.some(step => step.name === tech.name));
+  const lastStep = category.steps[category.steps.length-1];
+
+  return tech===lastStep;
 }
 
 let timer;
@@ -171,7 +174,7 @@ export function handleMouseover(e) {
       const cell = e.target.closest('td');
       const rowIndex = cell.parentNode.rowIndex;
       const colIndex = cell.cellIndex;
-      const step = board[rowIndex][colIndex];
+      const step = board[rowIndex][colIndex].tech;
 
       const tooltip = document.querySelector('#tooltip');
       if(step) {
@@ -200,4 +203,16 @@ export function handleMouseout(e) {
     const tooltip = document.querySelector('#tooltip');
     tooltip.classList.remove('visible');
   }
+}
+
+export function handleClickCompletedCell(e) {
+  console.log(e);
+  const j = e.target.closest('td').cellIndex;
+  const tr = e.target.closest('td').parentNode;
+  const i = tr.rowIndex;
+  const category = technologies.find(t => t.steps.some(step => step.name === board[i][j].tech.name));
+  updateScores(category);
+  board[i][j].tech = "";
+  board[i][j].completed = false;
+  renderTable();
 }

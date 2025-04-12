@@ -44,7 +44,6 @@ export const evolutions = [
                 "img": "jquery.png",
                 "description": "A library simplifying JavaScript development."
             },
-
         ]
     },
     {
@@ -66,6 +65,7 @@ export const evolutions = [
                 "img": "css3.png",
                 "description": "Introduced advanced styling options like animations."
             },
+
         ]
     },
     {
@@ -87,6 +87,7 @@ export const evolutions = [
                 "img": "html2.png",
                 "description": "The early version of HTML introduced basic markup for web pages."
             },
+
         ]
     },
     {

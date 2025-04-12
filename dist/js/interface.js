@@ -46,8 +46,8 @@ export function renderTable() {
   <table id="grid">
     ${board.map(row =>`
       <tr>
-        ${row.map(tech => `
-          <td class="cell border-2 w-13 h-13">${tech ? `<img draggable="true" class="w-full h-full" src="assets/logos/${tech.img}" >` : ""}</td>
+        ${row.map(cell => `
+          <td class="cell border-2 w-13 h-13 ${cell.completed ? "completed" : ""}">${cell.tech ? `<img draggable="true" class="w-full h-full" src="assets/logos/${cell.tech.img}" >` : ""}</td>
         `).join("")}
       </tr>
       `).join("")}

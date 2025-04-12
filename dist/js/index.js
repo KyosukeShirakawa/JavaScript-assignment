@@ -1,5 +1,5 @@
 import { renderTable, renderUserInfo, renderAndUpdateTimer, renderScores } from './interface.js';
-import {initData, handleClickCell, handleClickDrawBtn, handleDrop, handleDragStart, handleMouseover, handleMouseout, handleClickSubmit } from './game.js';
+import {initData, handleClickCell, handleClickDrawBtn, handleDrop, handleDragStart, handleMouseover, handleMouseout, handleClickSubmit, handleClickCompletedCell } from './game.js';
 
 
 
@@ -8,13 +8,14 @@ document.addEventListener('click', (e) => {
   if(e.target.matches('#submit-btn')) {
     handleClickSubmit();
   }
-
   if(e.target.matches('td') && !e.target.querySelector('img')) {
     handleClickCell(e);
-    renderTable();
   }
   if(e.target.matches('#draw-button')) {
     handleClickDrawBtn();
+  }
+  if(e.target.closest('.completed')) {
+    handleClickCompletedCell(e);
   }
 });
 
@@ -31,7 +32,6 @@ document.addEventListener('dragover', (e) => {
 document.addEventListener('drop', (e) => {
   e.preventDefault();
   handleDrop(e);
-  renderTable();
 });
 
 
