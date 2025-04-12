@@ -9,12 +9,13 @@ const centerDiv = document.querySelector('#center');
 export function renderUserInfo() {
   usernameSpan.innerHTML = `${username}`;
   difficultySpan.innerHTML = `${level}`;
-  scoreSpan.innerHTML = `${score}`;
 }
 
-export function renderTechScores() {
+export function renderScores() {
   const spans = document.querySelectorAll('.techScore');
-  return Array.from(spans).map((span) => {
+  scoreSpan.innerHTML = `${score}`;
+
+  Array.from(spans).map((span) => {
     const category = span.dataset.category;
     if(category && techScore.hasOwnProperty(category)) {
       span.innerHTML = techScore[category];

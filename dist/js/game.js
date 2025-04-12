@@ -1,4 +1,4 @@
-import { renderAndUpdateTimer, renderTable, renderUserInfo } from './interface.js';
+import { renderAndUpdateTimer, renderScores, renderTable, renderUserInfo } from './interface.js';
 import { levels, evolutions} from './evolutions.js';
 
 export let username;
@@ -76,15 +76,22 @@ function getHigherTech(tech) {
 
   const lastStep = category.steps[category.steps.length-1];
   if(lastStep===category.steps[currentIndex+1]) {
-    updateScore();
+    console.log(category);
+    updateScores(category);
     return null;
   }
 
   return category.steps[currentIndex+1];
 }
 
-function updateScore() {
+function updateScores(category) {
   score += levels[level].points;
+  console.log(score)
+  if(techScore.hasOwnProperty(category)) {
+    techScore[category] += levels[level].points;
+    renderScores();
+    console.log(score)
+  }
 }
 
 export function handleClickCell(e) {

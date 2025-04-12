@@ -1,4 +1,4 @@
-import { renderTable, renderUserInfo, renderAndUpdateTimer, renderTechScores } from './interface.js';
+import { renderTable, renderUserInfo, renderAndUpdateTimer, renderScores } from './interface.js';
 import {initData, handleClickCell, handleClickDrawBtn, handleDrop, handleDragStart, handleMouseover, handleMouseout, handleClickSubmit } from './game.js';
 
 
@@ -48,3 +48,4 @@ document.addEventListener('mouseout', (e) => {
   renderTable();
   renderAndUpdateTimer();
   renderUserInfo();
+  renderScores();
