@@ -1,5 +1,5 @@
-import { renderTable, renderUserInfo, renderAndUpdateTimer, renderScores } from './interface.js';
-import {initData, handleClickCell, handleClickDrawBtn, handleDrop, handleDragStart, handleMouseover, handleMouseout, handleClickSubmit, handleClickCompletedCell, handleClickBackToHomeBtn, handleRestartBtn } from './game.js';
+import { renderTable, renderUserInfo, renderScores } from './interface.js';
+import {initData, handleClickCell, handleClickDrawBtn, handleDrop, handleDragStart, handleMouseover, handleMouseout, handleClickSubmit, handleClickCompletedCell, handleClickBackToHomeBtn, handleRestartBtn ,renderAndUpdateTimer } from './game.js';
 
 
 

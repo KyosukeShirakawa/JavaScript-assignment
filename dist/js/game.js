@@ -1,4 +1,4 @@
-import { timerTimeout,renderAndUpdateTimer, renderScores, renderTable, renderUserInfo } from './interface.js';
+import { renderScores, renderTable, renderUserInfo } from './interface.js';
 import { levels, evolutions} from './evolutions.js';
 
 export let username;
@@ -222,9 +222,33 @@ export function handleClickBackToHomeBtn() {
 
 export function handleRestartBtn() {
   document.querySelector('#endDiv').hidden = true;
+
   clearTimeout(timerTimeout);
   initData();
   renderTable();
   renderAndUpdateTimer();
   renderUserInfo();
+}
+
+let timerTimeout;
+
+export function renderAndUpdateTimer() {
+  // https://how.dev/answers/how-to-create-a-countdown-timer-using-javascript
+
+  let now = new Date().getTime();
+  let timeLeft = time - now;
+  
+  // const timeLeft = 0;
+  let minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+  let seconds = Math.floor((timeLeft % (1000 * 60)) / (1000));
+
+  const timerSpan = document.querySelector('#timer');
+  timerSpan.innerHTML = `${minutes}:${seconds}`;
+
+  if(timeLeft > 0) {
+    timerTimeout = setTimeout(renderAndUpdateTimer, 1000);
+  } else {
+    document.querySelector('#endDiv').hidden = false;
+    timerSpan.innerHTML = '00:00';
+  }
 }

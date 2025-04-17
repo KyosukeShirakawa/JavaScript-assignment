@@ -1,6 +1,7 @@
 
-import { username, level, time, score, board, techScore } from "./game.js";
+import { username, level, score, board, techScore } from "./game.js";
 
+export let time = new Date().getTime() + 10 * 1000; // 10 seconds from now
 
 export function renderUserInfo() {
   const usernameSpan = document.querySelector('#username');
@@ -23,42 +24,18 @@ export function renderScores() {
   })
 }
 
-export let timerTimeout;
-
-export function renderAndUpdateTimer() {
-  // https://how.dev/answers/how-to-create-a-countdown-timer-using-javascript
-
-  const now = new Date().getTime();
-  // const timeLeft = time - now;
-  const timeLeft = 0;
-  const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((timeLeft % (1000 * 60)) / (1000));
-
-  const timerSpan = document.querySelector('#timer');
-
-  timerSpan.innerHTML = `${minutes}:${seconds}`;
-
-  if(timeLeft > 0) {
-    timerTimeout = setTimeout(renderAndUpdateTimer, 1000);
-  } else {
-    timerSpan.innerHTML = '00:00';
-    document.querySelector('#endDiv').hidden = false;
-  }
-}
 
 export function renderTable() {
-  const centerDiv = document.querySelector('#center');
+  const table = document.querySelector('#grid');
 
-  centerDiv.innerHTML = `
-  <table id="grid">
+  table.innerHTML = `
     ${board.map(row =>`
       <tr>
         ${row.map(cell => `
           <td class="cell border-2 w-13 h-13 ${cell.completed ? "completed" : ""}">${cell.tech ? `<img draggable="true" class="w-full h-full" src="assets/logos/${cell.tech.img}" >` : ""}</td>
         `).join("")}
       </tr>
-      `).join("")}
-  </table>`;
+      `).join("")}`;
 
   renderTooltip();
 
