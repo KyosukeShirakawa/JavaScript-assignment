@@ -1,11 +1,10 @@
-
-import { username, level, score, board, techScore } from "./game.js";
-
-export let time = new Date().getTime() + 10 * 1000; // 10 seconds from now
-
 export function renderUserInfo() {
   const usernameSpan = document.querySelector('#username');
   const difficultySpan = document.querySelector('#difficulty');
+
+  const username = localStorage.getItem('username') || 'guest';
+  const level = localStorage.getItem('level') || 'easy';
+
   usernameSpan.innerHTML = `${username}`;
   difficultySpan.innerHTML = `${level}`;
 }
@@ -13,6 +12,8 @@ export function renderUserInfo() {
 export function renderScores() {
   const scoreSpan = document.querySelector('#score');
   const spans = document.querySelectorAll('.techScore');
+  const score = JSON.parse(localStorage.getItem('score'));
+  const techScore = JSON.parse(localStorage.getItem('techScore'));
 
   scoreSpan.innerHTML = `${score}`;
 
@@ -24,9 +25,9 @@ export function renderScores() {
   })
 }
 
-
 export function renderTable() {
   const table = document.querySelector('#grid');
+  const board = JSON.parse(localStorage.getItem('board'));
 
   table.innerHTML = `
     ${board.map(row =>`
@@ -38,7 +39,6 @@ export function renderTable() {
       `).join("")}`;
 
   renderTooltip();
-
 };
 
 function renderTooltip() {

@@ -1,7 +1,4 @@
-import { renderTable, renderUserInfo, renderScores } from './interface.js';
-import {initData, handleClickCell, handleClickDrawBtn, handleDrop, handleDragStart, handleMouseover, handleMouseout, handleClickSubmit, handleClickCompletedCell, handleClickBackToHomeBtn, handleRestartBtn ,renderAndUpdateTimer } from './game.js';
-
-
+import {init, handleClickCell, handleClickDrawBtn, handleDrop, handleDragStart, handleMouseover, handleMouseout, handleClickSubmit, handleClickCompletedCell, handleClickBackToHomeBtn, handleRestartBtn} from './game.js';
 
 document.addEventListener('click', (e) => {
   e.preventDefault();
@@ -39,7 +36,6 @@ document.addEventListener('drop', (e) => {
   handleDrop(e);
 });
 
-
 document.addEventListener('mouseover', (e) => {
   handleMouseover(e);
 });
@@ -49,8 +45,5 @@ document.addEventListener('mouseout', (e) => {
 });
 
 
-  initData();
-  // renderTable();
-  renderAndUpdateTimer();
-  renderUserInfo();
-  renderScores();
+
+init();

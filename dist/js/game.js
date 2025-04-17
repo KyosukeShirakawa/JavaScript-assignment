@@ -1,11 +1,11 @@
 import { renderScores, renderTable, renderUserInfo } from './interface.js';
 import { levels, evolutions} from './evolutions.js';
 
-export let username;
-export let level = 'easy';
-export let time;
-export let score = 0;
-export let techScore = {
+const level = localStorage.getItem('level') || 'easy';
+const technologies = evolutions.filter(e => e.difficulty === level);
+let board = JSON.parse(localStorage.getItem('board')) || [];
+let score = JSON.parse(localStorage.getItem('score')) || 0;
+let techScore = JSON.parse(localStorage.getItem('techScore')) || {
   "Scripting Evolution": 0,
   "Styling Technologies": 0,
   "Markup Languages": 0,
@@ -18,8 +18,19 @@ export let techScore = {
   "Database Evolution": 0,
 };
 
-export let technologies;
-export let board = [];
+export function init() {
+  const isPlaying = JSON.parse(localStorage.getItem('isPlaying'));
+  if (isPlaying){
+    document.querySelector('#game-div').hidden = false;
+    renderTable();
+    renderUserInfo();
+    renderScores();
+    renderAndUpdateTimer();
+  } else {
+    localStorage.setItem('isPlaying', JSON.stringify(true));
+    document.querySelector('#start-div').hidden = false;
+  }
+}
 
 function random(min, max) {
   return Math.floor(Math.random() * (max-min + 1)+min )
@@ -32,12 +43,27 @@ function random468() {
 }
 
 export function initData() {
-  username = document.querySelector('#usernameInput').value;
-  level = document.querySelector('#difficultyInput').value;
-  technologies = evolutions.filter(e => e.difficulty === level
-  );
-  time = new Date().getTime() + (1000 * 60 * levels[level].time)
+  localStorage.setItem('username', document.querySelector('#usernameInput').value);
+  localStorage.setItem('level', document.querySelector('#difficultyInput').value);
+  let time = new Date().getTime() + (1000 * 60 * levels[level].time);
+  localStorage.setItem('time', time);
+  localStorage.setItem('score', JSON.stringify(0));
+  localStorage.setItem('techScore', JSON.stringify({
+  "Scripting Evolution": 0,
+  "Styling Technologies": 0,
+  "Markup Languages": 0,
+  "C Language Evolution": 0,
+  "IDE Evolution": 0,
+  "Audio Formats": 0,
+  "Video Formats": 0,
+  "Image Formats": 0,
+  "CMS Evolution": 0,
+  "Database Evolution": 0,
+}));
   initBoard();
+  renderAndUpdateTimer();
+  renderScores();
+  renderTable();
 }
 
 function initBoard() {
@@ -45,8 +71,8 @@ function initBoard() {
   board = Array.from({length: rows}, () => 
     Array.from({length: cols}, () => ({tech: "", completed: false}))
   );
-
   populateCells();
+  localStorage.setItem('board', JSON.stringify(board));
 }
 
 function populateCells() {
@@ -70,9 +96,10 @@ function generateRandomTech(min,max) {
 
 function updateScores(category) {
   score += levels[level].points;
+  localStorage.setItem('score', score);
   if(techScore.hasOwnProperty(category.name)) {
     techScore[category.name] += levels[level].points;
-
+    localStorage.setItem('techScore', JSON.stringify(techScore));
     renderScores();
   }
 }
@@ -81,7 +108,9 @@ export function handleClickCell(e) {
   const j = e.target.cellIndex;
   const tr = e.target.parentNode;
   const i = tr.rowIndex;
+  console.log(board)
   board[i][j].tech = generateRandomTech(0, technologies.length-1).steps[0];
+  localStorage.setItem('board', JSON.stringify(board));
   renderTable();
 }
 
@@ -104,6 +133,7 @@ export function handleClickDrawBtn() {
   if(emptyCellIndexes.length) {
     const { i, j } = emptyCellIndexes[random(0, emptyCellIndexes.length - 1)];
     board[i][j].tech = generateRandomTech(0, technologies.length-1).steps[0];
+    localStorage.setItem('board', JSON.stringify(board));
     renderTable();
   } else {
     return null;
@@ -128,17 +158,17 @@ export function handleDrop(e) {
     const i = tr.rowIndex;
     const higherTech = getHigherTech(board[i][j].tech)
 
-
     board[i][j].tech = higherTech; 
     if(isComplete(higherTech)) {
       board[i][j].completed = true;
     }
-
     draggedElement.classList.remove("dragging");
     draggedElement = null;
 
     const {rowIndex, colIndex} = startCellIndex;
     board[rowIndex][colIndex].tech = "";
+    localStorage.setItem('board', JSON.stringify(board));
+
     renderTable();
   }
 }
@@ -180,7 +210,8 @@ export function handleMouseover(e) {
         const imgRect = e.target.getBoundingClientRect();
         tooltip.style.left = `${imgRect.left + window.scrollX + e.target.offsetWidth / 2 - (tooltip.offsetWidth / 2) -10}px`;
         tooltip.style.top = `${imgRect.bottom + window.scrollY + 5}px`;
-
+        console.log(step);
+        console.log(technologies);
         tooltip.innerHTML = `
         <h2 class="text-black">${technologies.find(tech => tech.steps.includes(step)).name}</h2>
         <p class="text-black pb-2">${technologies.find(tech => tech.steps.includes(step)).description}</p>
@@ -212,6 +243,7 @@ export function handleClickCompletedCell(e) {
   updateScores(category);
   board[i][j].tech = "";
   board[i][j].completed = false;
+  localStorage.setItem('board', JSON.stringify(board));
   renderTable();
 }
 
@@ -222,6 +254,11 @@ export function handleClickBackToHomeBtn() {
 
 export function handleRestartBtn() {
   document.querySelector('#endDiv').hidden = true;
+  localStorage.removeItem('time');
+  localStorage.removeItem('score');
+  localStorage.removeItem('techScore');
+  localStorage.removeItem('board');
+
 
   clearTimeout(timerTimeout);
   initData();
@@ -236,9 +273,8 @@ export function renderAndUpdateTimer() {
   // https://how.dev/answers/how-to-create-a-countdown-timer-using-javascript
 
   let now = new Date().getTime();
+  let time = parseInt(localStorage.getItem('time'));
   let timeLeft = time - now;
-  
-  // const timeLeft = 0;
   let minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
   let seconds = Math.floor((timeLeft % (1000 * 60)) / (1000));
 
