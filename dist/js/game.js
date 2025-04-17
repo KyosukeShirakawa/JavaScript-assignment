@@ -268,7 +268,6 @@ export function handleRestartBtn() {
 }
 
 let timerTimeout;
-
 export function renderAndUpdateTimer() {
   // https://how.dev/answers/how-to-create-a-countdown-timer-using-javascript
 
