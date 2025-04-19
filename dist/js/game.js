@@ -1,7 +1,7 @@
 import { renderScores, renderTable, renderUserInfo } from './interface.js';
 import { levels, evolutions} from './evolutions.js';
 
-const level = localStorage.getItem('level') || 'easy';
+const level = localStorage.getItem('level');
 const technologies = evolutions.filter(e => e.difficulty === level);
 let board = JSON.parse(localStorage.getItem('board')) || [];
 let score = JSON.parse(localStorage.getItem('score')) || 0;
@@ -27,25 +27,28 @@ export function init() {
     renderScores();
     renderAndUpdateTimer();
   } else {
-    localStorage.setItem('isPlaying', JSON.stringify(true));
     document.querySelector('#start-div').hidden = false;
+    localStorage.setItem('isPlaying', JSON.stringify(true));
   }
 }
 
-function random(min, max) {
-  return Math.floor(Math.random() * (max-min + 1)+min )
+export function handleClickSubmit() {
+  document.querySelector('#start-div').hidden = true;
+  document.querySelector('#game-div').hidden = false;
+  const username = document.querySelector('#usernameInput').value;
+  const level = document.querySelector('#difficultyInput').value
+  localStorage.setItem('username', username);
+  localStorage.setItem('level', level);
+  
+  initData();
+  renderTable();
+  renderAndUpdateTimer();
+  renderUserInfo();
 }
 
-function random468() {
-  const nums = [4,6,8];
-
-  return nums[random(0, nums.length-1)];
-}
-
-export function initData() {
-  localStorage.setItem('username', document.querySelector('#usernameInput').value);
-  localStorage.setItem('level', document.querySelector('#difficultyInput').value);
-  let time = new Date().getTime() + (1000 * 60 * levels[level].time);
+function initData() {
+  const level = localStorage.getItem('level');
+  const time = new Date().getTime() + (1000 * 60 * levels[level].time);
   localStorage.setItem('time', time);
   localStorage.setItem('score', JSON.stringify(0));
   localStorage.setItem('techScore', JSON.stringify({
@@ -59,23 +62,23 @@ export function initData() {
   "Image Formats": 0,
   "CMS Evolution": 0,
   "Database Evolution": 0,
-}));
-  initBoard();
+  }));
+  initBoard(level);
   renderAndUpdateTimer();
   renderScores();
   renderTable();
 }
 
-function initBoard() {
+function initBoard(level) {
   const {cols, rows} = levels[level];
   board = Array.from({length: rows}, () => 
     Array.from({length: cols}, () => ({tech: "", completed: false}))
   );
-  populateCells();
+  populateCells(level);
   localStorage.setItem('board', JSON.stringify(board));
 }
 
-function populateCells() {
+function populateCells(level) {
   const {cols, rows} = levels[level];
   let filled = 0;
   const n = random468();
@@ -88,6 +91,42 @@ function populateCells() {
       filled++;
     }
   }
+}
+
+
+let timerTimeout;
+export function renderAndUpdateTimer() {
+  // https://how.dev/answers/how-to-create-a-countdown-timer-using-javascript
+
+  let now = new Date().getTime();
+  let time = parseInt(localStorage.getItem('time'));
+  let timeLeft = 5;
+  timeLeft = time - now;
+
+  // let timeLeft = time - now;
+  let minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+  let seconds = Math.floor((timeLeft % (1000 * 60)) / (1000));
+
+  const timerSpan = document.querySelector('#timer');
+  timerSpan.innerHTML = `${minutes}:${seconds}`;
+
+  if(timeLeft > 0) {
+    timerTimeout = setTimeout(renderAndUpdateTimer, 1000);
+  } else {
+    document.querySelector('#endDiv').hidden = false;
+    timerSpan.innerHTML = '00:00';
+    saveScore();
+  }
+}
+
+export function handleClickCell(e) {
+  const j = e.target.cellIndex;
+  const tr = e.target.parentNode;
+  const i = tr.rowIndex;
+  console.log(board)
+  board[i][j].tech = generateRandomTech(0, technologies.length-1).steps[0];
+  localStorage.setItem('board', JSON.stringify(board));
+  renderTable();
 }
 
 function generateRandomTech(min,max) {
@@ -104,24 +143,42 @@ function updateScores(category) {
   }
 }
 
-export function handleClickCell(e) {
-  const j = e.target.cellIndex;
-  const tr = e.target.parentNode;
-  const i = tr.rowIndex;
-  console.log(board)
-  board[i][j].tech = generateRandomTech(0, technologies.length-1).steps[0];
-  localStorage.setItem('board', JSON.stringify(board));
-  renderTable();
+function getHigherTech(tech) {
+  const category = technologies.find(t => t.steps.some(step => step.name === tech.name));
+  const currentIndex = category.steps.findIndex(step => step.name === tech.name);
+
+  return category.steps[currentIndex+1];
 }
 
-export function handleClickSubmit() {
-  document.querySelector('#start-div').hidden = true;
-  document.querySelector('#game-div').hidden = false;
-  initData();
-  renderTable();
-  renderAndUpdateTimer();
-  renderUserInfo();
+function isComplete(tech) {
+  const category = technologies.find(t => t.steps.some(step => step.name === tech.name));
+  const lastStep = category.steps[category.steps.length-1];
+
+  return tech===lastStep;
 }
+
+function startTestTimer() {
+  const testDuration = 5 * 1000; // 5 seconds
+  const endTime = Date.now() + testDuration;
+  localStorage.setItem('time', endTime.toString());
+  renderAndUpdateTimer();
+}
+
+function saveScore() {
+  const leaderboard = JSON.parse(localStorage.getItem('leaderboard')) || {
+    "easy" : [],
+    "medium" : [], 
+    "hard" : [] 
+  };
+  const username = localStorage.getItem('username') || "guest";
+  const score = localStorage.getItem('score');
+
+  leaderboard[level].push({username, score}) 
+  localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
+}
+
+
+
 
 export function handleClickDrawBtn() {
   const emptyCellIndexes = board.map((row,i)=> row.map ( (cell, j) => {
@@ -173,20 +230,6 @@ export function handleDrop(e) {
   }
 }
 
-function getHigherTech(tech) {
-  const category = technologies.find(t => t.steps.some(step => step.name === tech.name));
-  const currentIndex = category.steps.findIndex(step => step.name === tech.name);
-
-  return category.steps[currentIndex+1];
-}
-
-function isComplete(tech) {
-  const category = technologies.find(t => t.steps.some(step => step.name === tech.name));
-  const lastStep = category.steps[category.steps.length-1];
-
-  return tech===lastStep;
-}
-
 let timer;
 let currentCell = null;
 export function handleMouseover(e) {
@@ -210,12 +253,11 @@ export function handleMouseover(e) {
         const imgRect = e.target.getBoundingClientRect();
         tooltip.style.left = `${imgRect.left + window.scrollX + e.target.offsetWidth / 2 - (tooltip.offsetWidth / 2) -10}px`;
         tooltip.style.top = `${imgRect.bottom + window.scrollY + 5}px`;
-        console.log(step);
-        console.log(technologies);
+
         tooltip.innerHTML = `
-        <h2 class="text-black">${technologies.find(tech => tech.steps.includes(step)).name}</h2>
-        <p class="text-black pb-2">${technologies.find(tech => tech.steps.includes(step)).description}</p>
-        <img class="mb-2" src="./assets/evolutions/${technologies.find(tech => tech.steps.includes(step)).tooltip}" alt="${technologies.find(tech => tech.steps.includes(step)).name}">`
+        <h2 class="text-black">${technologies.find(tech => tech.steps.some(s => s.name === step.name)).name}</h2>
+        <p class="text-black pb-2">${technologies.find(tech => tech.steps.some(s => s.name === step.name)).description}</p>
+        <img class="mb-2" src="./assets/evolutions/${technologies.find(tech => tech.steps.some(s => s.name === step.name)).tooltip}" alt="${technologies.find(tech => tech.steps.some(s => s.name === step.name)).name}">`
 
         // https://medium.com/@jazpersaldana_43178/basics-of-getboundingclientrect-bd6c382759d9
 
@@ -250,6 +292,7 @@ export function handleClickCompletedCell(e) {
 export function handleClickBackToHomeBtn() {
   document.querySelector('#start-div').hidden = false;
   document.querySelector('#game-div').hidden = true;
+  document.querySelector('#endDiv').hidden = true;
 }
 
 export function handleRestartBtn() {
@@ -258,32 +301,24 @@ export function handleRestartBtn() {
   localStorage.removeItem('score');
   localStorage.removeItem('techScore');
   localStorage.removeItem('board');
-
-
+  console.log(score)
+  score=0;
+  console.log(techScore)
   clearTimeout(timerTimeout);
   initData();
   renderTable();
-  renderAndUpdateTimer();
+  // renderAndUpdateTimer();
+  startTestTimer();
   renderUserInfo();
 }
 
-let timerTimeout;
-export function renderAndUpdateTimer() {
-  // https://how.dev/answers/how-to-create-a-countdown-timer-using-javascript
 
-  let now = new Date().getTime();
-  let time = parseInt(localStorage.getItem('time'));
-  let timeLeft = time - now;
-  let minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-  let seconds = Math.floor((timeLeft % (1000 * 60)) / (1000));
+function random(min, max) {
+  return Math.floor(Math.random() * (max-min + 1)+min )
+}
 
-  const timerSpan = document.querySelector('#timer');
-  timerSpan.innerHTML = `${minutes}:${seconds}`;
+function random468() {
+  const nums = [4,6,8];
 
-  if(timeLeft > 0) {
-    timerTimeout = setTimeout(renderAndUpdateTimer, 1000);
-  } else {
-    document.querySelector('#endDiv').hidden = false;
-    timerSpan.innerHTML = '00:00';
-  }
+  return nums[random(0, nums.length-1)];
 }

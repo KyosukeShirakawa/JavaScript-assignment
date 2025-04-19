@@ -27,7 +27,7 @@ export function renderScores() {
 
 export function renderTable() {
   const table = document.querySelector('#grid');
-  const board = JSON.parse(localStorage.getItem('board'));
+  const board = JSON.parse(localStorage.getItem('board')) || [[]];
 
   table.innerHTML = `
     ${board.map(row =>`
