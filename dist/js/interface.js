@@ -47,3 +47,25 @@ function renderTooltip() {
   tooltip.className = 'bg-white p-4 max-w-100';
   document.querySelector('#center').appendChild(tooltip);
 }
+
+export function renderLeaderboard() {
+  const leaderboard = JSON.parse(localStorage.getItem('leaderboard'));
+  const leaderboardScore = document.querySelector('#leaderboardScore');
+  leaderboardScore.innerHTML = Object.entries(leaderboard)
+    .map(([level, scores]) => {
+    const scoreList = scores
+      .sort((a,b) => b.score - a.score)
+      .slice(0,5)
+      .map(s => `<li class="flex text-left">
+                    <h4 class="w-20"><span>${s.username ?? "guest"}</span></h4>
+                    <h4><span class"ml-1">: ${s.score ?? 0}</span></h4>
+                  </li>`).join("");
+    return `
+      <div>
+        <h4>${level}</h4>
+        <ul>${scoreList}</ul>
+      </div>`
+    }).join("");
+
+
+}

@@ -1,4 +1,4 @@
-import { renderScores, renderTable, renderUserInfo } from './interface.js';
+import { renderScores, renderTable, renderUserInfo, renderLeaderboard } from './interface.js';
 import { levels, evolutions} from './evolutions.js';
 
 const level = localStorage.getItem('level');
@@ -25,6 +25,7 @@ export function init() {
     renderTable();
     renderUserInfo();
     renderScores();
+    renderLeaderboard();
     renderAndUpdateTimer();
   } else {
     document.querySelector('#start-div').hidden = false;
@@ -301,12 +302,11 @@ export function handleRestartBtn() {
   localStorage.removeItem('score');
   localStorage.removeItem('techScore');
   localStorage.removeItem('board');
-  console.log(score)
   score=0;
-  console.log(techScore)
   clearTimeout(timerTimeout);
   initData();
   renderTable();
+  renderLeaderboard();
   // renderAndUpdateTimer();
   startTestTimer();
   renderUserInfo();
